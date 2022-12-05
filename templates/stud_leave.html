@@ -1,0 +1,21 @@
+{% extends 'base_stud.html' %}
+
+{% block section %}
+    <div class="main">
+        <form action="/request_leave" method="post">
+            {% csrf_token %}
+            <div class="addstaff">
+                <h3>Apply For Leave Here </h3>
+
+                <div> <label for="date"> Leave Date</label>
+                    <input type="date" name="leave_date" id="date">
+                </div>
+                <div><label for="note">NOTE:</label>
+                    <textarea name="note" id="note" cols="30" rows="10"
+                        style="max-width:50rem ;max-height: 5rem;min-height: 5rem;min-width: 50rem;"></textarea>
+                </div>
+            </div>
+            <input type="submit" class="leave-btn" value="SUBMIT">
+        </form>
+    </div>
+{% endblock section %}

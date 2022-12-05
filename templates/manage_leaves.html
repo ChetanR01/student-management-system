@@ -1,0 +1,34 @@
+{% extends 'base_admin.html' %}
+    
+{% block section %}
+    <div class="main">
+        <h3>Manage Leaves</h3>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Applied by</th>
+                    <th>Date</th>
+                    <th>Note</th>
+                    <th>Date of Leave</th>
+                    <th>Status</th>
+                    <th>Update</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for leave in leaves %}
+                <tr>
+                    <td>{{leave.user.first_name}}</td>
+                    <td>{{leave.date}}</td>
+                    <td>{{leave.note}}</td>
+                    <td>{{leave.leave_date}}</td>
+                    <td id="">{{leave.leave_state}}</td>
+                    <td><button id="edit-btn">Update</button></td>
+                </tr>
+                {% endfor %}
+            
+            </tbody>
+        </table>
+    </div>
+{% endblock section %}

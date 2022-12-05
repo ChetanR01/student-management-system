@@ -1,0 +1,52 @@
+{% extends 'base_staff.html' %}
+
+{% block section %}
+    <div class="main">
+        <form action="" method="post">
+            <div class="addstaff">
+                <h3>Mark Attendance</h3>
+                {% csrf_token %}
+                <div class="course-select">
+                    <label for="course">Course</label>
+                    <select name="course" id="course" required="" onchange="location = this.value;">
+						<option value="">Select Course</option>
+                        {% for rec in staff_course %}
+                        {% for course in rec.rel_course.all %}
+                        <option value="/fetch-stud/{{course.id}}">{{course.name}}</option>
+						{% endfor %}
+                        {% endfor %}						
+					</select>
+                </div>
+                
+            </div></form>
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Present</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <form action="/update-attendance" method="post">
+                        {% csrf_token %}
+                    {% for stud in stud_list %}
+                    <tr>
+                        <td><span>{{stud.user.first_name}}</span></td>
+                        <input type="hidden" name="sel_course" value="{{sel_course}}">
+                        <input type="hidden" name="stud_count" value="{{stud_count}}">
+                        <input type="hidden" name="stud_id{{forloop.counter}}" value="{{stud.id}}">
+                        <td><input type="checkbox" name="present{{forloop.counter}}" id="present" ></td>
+                    </tr>
+                    {% endfor %}
+                    <div> <label for="date">Date </label>
+                        <input type="date" id="date" name="date">
+                    </div>
+                    <br>
+                    <input type="submit" id="fetch-btn" value="Update Attendance">
+                </form>
+                </tbody>
+            </table>
+        
+    </div>
+{% endblock section %}

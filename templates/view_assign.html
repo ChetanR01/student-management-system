@@ -1,0 +1,60 @@
+{% extends 'base_staff.html' %}
+
+{% block section %}
+
+<div class="main">
+    <h3>Manage Assignment</h3>
+    <form method="post" action="/fetch-assign">
+        {% csrf_token %}
+    <div class="fetch-bar">
+        <div class="course-select">
+            <label for="course">Course</label>
+            <select name="course" id="course">
+                {% for rec in staff_course %}
+                {% for course in rec.rel_course.all %}
+                <option value="{{course.id}}">{{course.name}}</option>
+                {% endfor %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="fetch-date">
+            <label for="fetch-date">Date :</label>
+            <input type="date" name="date" id="fetch-date">
+        </div>
+        <div class="fetch-btn">
+            <input type="submit" id="fetch-btn" value="Fetch Assignments">
+        </div>
+    </form>
+    </div>
+
+
+    <div class="main">
+        <h3>Submitted Assignments</h3>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Course</th>
+                    <th>Date</th>
+                    <th>Due</th>
+                    <th>Assignment</th>
+                    <th>Student Name</th>
+                    <th>Status</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for assign in assignments %}
+                <tr>
+                    <td>{{assign.course}}</td>
+                    <td>{{assign.date}}</td>
+                    <td>{{assign.due_date}}</td>
+                    <td>{{assign.name}}</td>
+                    <td>{{student}}</td>
+                    <td>{{assign_state}}</td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+{% endblock section %}

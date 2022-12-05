@@ -1,0 +1,39 @@
+{% extends 'base_admin.html' %}
+
+{% block section %}
+    <div class="main">
+        <h3>Manage Staff</h3>
+
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Staff Name</th>
+                    <th>UID</th>
+                    <th>Related Subjects</th>
+                    <th>Delete</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for staff in staffs %}
+                <tr>
+                    <td>{{staff.user.first_name}}</td>
+                    <td>{{staff.staff_id}}</td>
+                    <td>
+                        {% for course in staff.rel_course.all %}
+                        {{course}},
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <button type="button" id="del-btn" onclick="location.href='/delete-staff/{{staff.id}}' ">Delete</button>
+                    </td>
+                    <td>
+                        <button type="button" id="edit-btn" onclick="location.href='/edit-staff/{{staff.id}}' ">Edit</button>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock section %}

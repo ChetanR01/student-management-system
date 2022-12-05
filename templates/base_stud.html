@@ -1,0 +1,30 @@
+
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="{% static './CSS/stud_styles.css' %}">
+    <link rel="stylesheet" href="{% static './CSS/admin.css' %}">
+</head>
+
+<body>
+    <div class="sidenav">
+        <a href="/student_page">Home</a>
+        <p class="studname" id="stud-name"><span>{{user.first_name}} {{user.last_name}}</span><br>ID : <span>974357395</span></p>
+        <a href="/view_attendance">View Attendance</a>
+        <a href="/view_stud_assign">View Assignments</a>
+        <a href="/stud_leave">Apply for Leave</a>
+        <a href="/view_course">View Course</a>
+        <a href="/logout">Logout</a>
+        <!-- <a href="#contact">Contact</a> -->
+    </div>
+    
+{% block section %}{% endblock section %}
+
+</body>
+
+</html>

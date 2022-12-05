@@ -1,0 +1,35 @@
+{% extends 'base_staff.html' %}
+
+{% block section %}
+    <div class="main">
+        <form action="/create_new_assign" method="post">
+        <div class="addstaff">
+            <h3>ADD ASSIGNMENT DETAILS</h3>
+            {% csrf_token %}
+            <div><label for="name">Course</label>
+                <select name="course" id="course">
+                    {% for course in courses %}
+                    <option value="{{course.id}}">{{course.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div><label for="name">Assignment Name</label>
+                <input type="text" name="assign_name" id="name" placeholder="Enter Assignment Name">
+            </div>
+            <div><label for="due-date">Due Date: </label>
+                <input type="date" name="due_date" id="due-date">
+            </div>
+
+            <div><label for="questions">Questions</label>
+                <textarea name="questions" id="questions" style="
+                height: 10em;
+                width: 50em;
+            "></textarea>
+            </div>
+            
+        </div>
+        <input type="submit" value="Create Assignment" class="assgn-btn">
+    </form>
+
+    </div>
+{% endblock section %}

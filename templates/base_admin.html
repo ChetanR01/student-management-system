@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Staff</title>
+    <link rel="stylesheet" href="{% static './CSS/styles.css' %}">
+    <link rel="stylesheet" href="{% static './CSS/admin.css' %}">
+</head>
+
+<body>
+
+    {% for message in messages%}
+		<div class="alert alert-success alert-dismissible" role="alert" style="text-align: center;">
+			{{message}}
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+	{% endfor %} 
+
+
+    <div class="sidenav">
+        <a href="/myadmin">Home</a>
+        <p class="Adminname" id="Adm-name"><span>{{user.first_name}} {{user.last_name}}</span><br>ID : <span>974357395</span></p>
+        <a href="/add_staff">Add Staff</a>
+        <a href="/manage_staff">Manage Staff</a>
+        <a href="/add_student">Add Student</a>
+        <a href="/manage_student">Manage Student</a>
+        <a href="/add_course">Add Course</a>
+        <a href="/manage_course">Manage Course</a>
+        <a href="/manage_leaves">Manage Leaves</a>
+        <a href="/logout">Logout</a>
+        <!-- <a href="#contact">Contact</a> -->
+    </div>
+    
+{% comment %} block Section {% endcomment %}
+    {% block section %}{% endblock section %}
+
+   
+</body>
+
+</html>

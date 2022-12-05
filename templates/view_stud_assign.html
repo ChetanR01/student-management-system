@@ -1,0 +1,48 @@
+{% extends 'base_stud.html' %}
+
+{% block section %}
+<div class="main">
+    <h3>Manage Assignments</h3>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Assignment Name</th>
+                <th>Course</th>
+                <th>Date</th>
+                <th>Due Date</th>
+                <th>Question</th>
+                <th>Answer</th>
+                <th>Submit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for assign in assignments %}
+            <form method="post" action="/submit-assign/{{assign.id}}">
+            {% csrf_token %}
+            {% if assign.course in my_course_list %}
+            <tr>
+                <td>{{assign.name}}</td>
+                <td>{{assign.course}}</td>
+                <td>{{assign.date}}</td>
+                <input type="hidden" name="due_date" value="{{assign.due_date}}">
+                <td>{{assign.due_date}}</td>
+                <td>{{assign.questions}}</td>
+                <td>
+                    <textarea name="answer" value="{{assign.answer}}" style="
+                    height: 8em;
+                    width: 25em;
+                "></textarea>
+                </td>
+                <td>
+                    <button type="submit" id="del-btn">Submit</button>
+                </td>
+            </tr>
+            {% endif %}
+            
+            </form>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock section %}

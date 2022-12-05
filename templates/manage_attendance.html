@@ -1,0 +1,48 @@
+{% extends 'base_staff.html' %}
+
+{% block section %}
+    <div class="main">
+        <h3>View Attendance</h3>
+        <form action="/get-attendance" method="post">
+            {% csrf_token %}
+        <div class="fetch-bar">
+            <div class="course-select">
+                <label for="course">Course</label>
+                <select name="course" id="course">
+                    {% for course in courses %}
+                    <option value="{{course.id}}">{{course.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="fetch-date">
+                <label for="fetch-date">Date :</label>
+                <input type="date" name="date" id="fetch-date">
+            </div>
+            <div class="fetch-btn">
+                <input type="submit" id="fetch-btn" value="Fetch Attendance">
+            </div>
+        </div>
+    </form>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Course</th>
+                    <th>Student Name</th>
+                    <th>Date</th>
+                    <th>Present/Absent</th>
+                </tr>
+            </thead>
+            <tbody>
+                    {% for rec in attendance %}
+                    <tr>
+                        <td>{{rec.course}}</td>
+                        <td>{{rec.student.user.first_name}}</td>
+                        <td>{{rec.date}}</td>
+                        <td>{{rec.attendance_state}}</td>
+                    </tr>
+                    {% endfor %}
+                                
+            </tbody>
+        </table>
+    </div>
+{% endblock section %}

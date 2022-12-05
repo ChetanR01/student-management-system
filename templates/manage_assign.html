@@ -1,0 +1,31 @@
+{% extends 'base_staff.html' %}
+
+{% block section %}
+<div class="main">
+    <h3>Manage Assignments</h3>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Assignment Name</th>
+                <th>Course</th>
+                <th>Date</th>
+                <th>Due</th>
+                <th>Questions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for assign in assignments %}
+            <tr>
+                <td>{{assign.name}}</td>
+                <td>{{assign.course}}</td>
+                <td>{{assign.date}}</td>
+                <td>{{assign.due_date}}</td>
+                <td>{{assign.questions}}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+{% endblock section %}

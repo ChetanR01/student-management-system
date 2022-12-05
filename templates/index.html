@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static './CSS/styles.css' %}">
+    <title>SignUp</title>
+
+</head>
+
+<body>
+    <div class="signupform">
+        <h2>Login Page</h2>
+        <form action="login" method="post">
+            {% csrf_token %}
+            <label for="usertype">Choose User Type</label>
+            <select name="user_type" id="usertype" required>
+                <option value="3">Student</option>
+                <option value="1">Admin</option>
+                <option value="2">Staff</option>
+            </select>
+            <label for="user">UserID</label>
+            <input type="text" name="userid" id="user" placeholder="Enter UserID" required>
+
+            <label for="pass">Enter Password</label>
+            <input type="password" name="password" id="pass" placeholder="Enter password" required>
+            <!-- <label for="conf-pass">Confirm Password</label>
+            <input type="password" name="conf-pass" id="conf-pass"> -->
+            <br>
+            <input type="submit" class="sign-btn" value="Login">
+        </form>
+        <!-- <p>You already have an Account?<a href="#">Log In</a></p> -->
+        {% comment %} <input type="button" onclick="window.location.href='./admin.html'" class="sign-btn" value="SignUp"> {% endcomment %}
+    </div>
+
+    </div>
+
+</body>
+
+</html>
