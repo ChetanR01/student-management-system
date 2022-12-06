@@ -79,10 +79,11 @@ WSGI_APPLICATION = 'StudentManagementSystem.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME':'StudentManagementSystem',
+        'NAME':'railway',
         'USER':'postgres',
-        'PASSWORD':'Chetan@01',
-        'HOST':'localhost',
+        'PASSWORD':'1sWioDEypsBRzJ0Yh3dD',
+        'HOST':'containers-us-west-150.railway.app',
+        'PORT':'6769',
     }
 }
 
