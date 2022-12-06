@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,600;1,400&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+  /* min-width: 20rem; */
+  max-width: 25rem;
+  margin-bottom: 1em;
+}
+
+#name,
+#Email,
+#pass,
+#conf-pass,
+#usertype,
+#user {
+  min-width: 20rem;
+  padding: 0.5em;
+
+
+}
+
+.signupform {
+  background: #6cffae;
+  border-radius: 18px;
+  margin: 2rem auto;
+  padding: 2rem 0;
+  max-width: 30rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 10px 25px rgba(8, 92, 102, 0.2);
+}
+
+.sign-btn {
+  min-width: 12em;
+  padding: 1em;
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  color: aliceblue;
+  font-size: 16px;
+  text-transform: uppercase;
+  background: orangered;
+  border: none;
+  border-radius: 28px;
+  cursor: pointer;
+}
+
+label {
+
+  padding: 0.6rem 0 0.4rem 0;
+
+}
+
+/* Admin Page Styling --*/
+

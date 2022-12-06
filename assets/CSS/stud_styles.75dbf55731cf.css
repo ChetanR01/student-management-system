@@ -1,0 +1,99 @@
+body {
+  font-family: "Lato", sans-serif;
+}
+
+.sidenav {
+  height: 100%;
+  width: 20rem;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.sidenav a {
+  padding: 6px 8px 36px 16px;
+  text-decoration: none;
+  font-size: 22px;
+  color: #818181;
+  display: block;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.main {
+  margin-left: 15rem;
+  /* Same as the width of the sidenav */
+  font-size: 20px;
+  /* Increased text to enable scrolling */
+  padding: 0px 10px;
+}
+
+.sidenav p {
+  margin-top: 0;
+  color: black;
+  background-color: antiquewhite;
+  padding: 1em;
+}
+
+.logo_stud {
+  width: fit-content;
+  height: 12em;
+  margin: 0px auto 30px auto;
+  display: grid;
+  place-items: center;
+}
+
+.fetch-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+#course {
+  padding: 0.6em;
+}
+
+#fetch-btn {
+  padding: 1em;
+  background-color: #3fdd00;
+  border: thin;
+  color: rgb(255, 254, 254);
+  text-transform: uppercase;
+  font-weight: bold;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all;
+}
+
+#fetch-btn:hover {
+  transform: scale(1.025);
+
+}
+.leave-btn{
+  color: white;
+  background-color: #3fdd00;
+  width:10rem;
+  height: 3rem;
+  margin-left: 30rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  font-size: large;
+}
+.assgn-btn{
+  color: white;
+  background-color: #3fdd00;
+  width:10rem;
+  height: 3rem;
+  margin-left: 2rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  font-size: large;
+}
