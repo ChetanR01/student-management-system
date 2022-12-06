@@ -27,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+# CSRF for railway app
+CSRF_TRUSTED_ORIGINS = [
+    'https://student-management-system.up.railway.app'
+]
 
 # Application definition
 
