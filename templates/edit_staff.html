@@ -1,0 +1,31 @@
+{% extends 'base_admin.html' %}
+
+{% block section %}
+    <div class="main">
+        {% for data in staff %}
+        <form method="post" action="/update_staff_data/{{data.user.id}}">
+            {% csrf_token %}
+        <div class="addstaff">
+            <h3>ADD STAFF DETAILS</h3>
+            <div><label for="name">Name:</label>
+                <input type="text" name="name" id="name" value="{{data.user.first_name}}" placeholder="{{data.user.first_name}}">
+            </div>
+            <div><label for="username">Username:</label>
+                <input type="text" name="username" id="Username" placeholder="{{data.user.username}} (can't change username)">
+            </div>
+            <div><label for="pass">Enter Password:</label>
+                <input type="password" value="{{data.user.password}}" name="password" id="pass" placeholder="Enter New password">
+            </div>
+            <div> <label for="UID">UserID : </label>
+                <input type="text" name="staff_id" id="UID" value="{{data.staff_id}}" placeholder="{{data.staff_id}}">
+            </div>
+            
+            <div><label for="Rel_courses">Related Courses ID: </label>
+                <input type="text" name=rel_course id="Rel_courses" placeholder="Enter Related Courses IDs(sepereted by ",")">
+            </div>
+            <button class="sign-btn" type="submit">Update Staff Details</button>
+        </div>
+    </form>
+    {% endfor %}
+    </div>
+{% endblock section %}

@@ -20,6 +20,7 @@
             <form method="post" action="/submit-assign/{{assign.id}}">
             {% csrf_token %}
             {% if assign.course in my_course_list %}
+            {% if assign.name not in submitted_list %}
             <tr>
                 <td>{{assign.name}}</td>
                 <td>{{assign.course}}</td>
@@ -28,15 +29,13 @@
                 <td>{{assign.due_date}}</td>
                 <td>{{assign.questions}}</td>
                 <td>
-                    <textarea name="answer" value="{{assign.answer}}" style="
-                    height: 8em;
-                    width: 25em;
-                "></textarea>
+                    <textarea name="answer" style="height: 8em; width: 25em;"></textarea>
                 </td>
                 <td>
                     <button type="submit" id="del-btn">Submit</button>
                 </td>
             </tr>
+            {% endif %}
             {% endif %}
             
             </form>

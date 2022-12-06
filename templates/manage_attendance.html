@@ -9,8 +9,10 @@
             <div class="course-select">
                 <label for="course">Course</label>
                 <select name="course" id="course">
-                    {% for course in courses %}
+                    {% for rec in staff_course %}
+                    {% for course in rec.rel_course.all %}
                     <option value="{{course.id}}">{{course.name}}</option>
+                    {% endfor %}
                     {% endfor %}
                 </select>
             </div>

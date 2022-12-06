@@ -9,12 +9,13 @@
                 <th>Assignment Name</th>
                 <th>Course</th>
                 <th>Date</th>
-                <th>Due</th>
+                <th>Due Date</th>
                 <th>Questions</th>
             </tr>
         </thead>
         <tbody>
             {% for assign in assignments %}
+            {% if assign.course in my_course_list %}
             <tr>
                 <td>{{assign.name}}</td>
                 <td>{{assign.course}}</td>
@@ -22,6 +23,7 @@
                 <td>{{assign.due_date}}</td>
                 <td>{{assign.questions}}</td>
             </tr>
+            {% endif %}
             {% endfor %}
 
         </tbody>

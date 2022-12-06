@@ -1,0 +1,27 @@
+{% extends 'base_stud.html' %}
+
+{% block section %}
+   <div class="main">
+        <h3>View Applied Leaves</h3>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Applied On</th>
+                    <th>Leave Date</th>
+                    <th>Leave Note</th>
+                    <th>Leave Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for leave in leaves %}
+                <tr>
+                    <td>{{leave.date}}</td>
+                    <td>{{leave.leave_date}}</td>
+                    <td>{{leave.note}}</td>
+                    <td>{{leave.leave_state}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock section %}

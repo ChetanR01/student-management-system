@@ -80,7 +80,7 @@ class Leaves(models.Model):
     date = models.DateField()
     leave_date = models.DateField()
     note = models.TextField()
-    leave_option = (("applied", "Applied"), ("approve", "Approve"), ("reject", "Reject"))
+    leave_option = (("applied", "Applied"), ("approved", "Approved"), ("rejected", "Rejected"))
     leave_state = models.CharField(choices=leave_option, max_length=50)
 
     # def __str__(self):

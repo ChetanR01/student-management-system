@@ -11,7 +11,8 @@
                     <th>Note</th>
                     <th>Date of Leave</th>
                     <th>Status</th>
-                    <th>Update</th>
+                    <th>Approve</th>
+                    <th>Reject</th>
 
                 </tr>
             </thead>
@@ -24,7 +25,8 @@
                     <td>{{leave.note}}</td>
                     <td>{{leave.leave_date}}</td>
                     <td id="">{{leave.leave_state}}</td>
-                    <td><button id="edit-btn">Update</button></td>
+                    <td><button id="edit-btn" onclick="location.href='/approve-leave/{{leave.id}}' ">Approve</button></td>
+                    <td><button id="edit-btn" onclick="location.href='/reject-leave/{{leave.id}}' ">Reject</button></td>
                 </tr>
                 {% endfor %}
             

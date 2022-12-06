@@ -112,8 +112,12 @@ def view_stud_assign(request):
             for course in my_courses:
                 my_course_list.append(course)
             assignments = CreateAssign.objects.all()
-            print(assignments)
-            return render(request, "view_stud_assign.html", {"assignments":assignments,"stud_courses":stud_courses,"my_course_list":my_course_list})
+            my_assign = Assignment.objects.filter(student__user=request.user.id)
+            submitted_list=[]
+            for rec in my_assign:
+                if rec.assign_state=="submitted" or rec.assign_state=="checked" or rec.assign_state=="late":
+                    submitted_list.append(rec.assign.name)
+            return render(request, "view_stud_assign.html", {"assignments":assignments,"stud_courses":stud_courses,"my_course_list":my_course_list,"submitted_list":submitted_list})
         else:
             return redirect("/")   
     else:
@@ -140,9 +144,9 @@ def submit_assign(request,id):
             newdate1=datetime.strftime(datetime.strptime(due_date,'%b. %d, %Y').date(),'%Y-%m-%d')
             print("new date",type(newdate1))
             if newdate1 < str(todays_date):
-                assign_state="submitted"
-            else:
                 assign_state="late"
+            else:
+                assign_state="submitted"
             submit_assign = Assignment.objects.create(assign=rel_assign,student=curr_user,sub_date=date.today(),assign_state=assign_state,answer=answer)
             submit_assign.save()
             return redirect("/view_stud_assign")
@@ -151,24 +155,6 @@ def submit_assign(request,id):
     else:
         return redirect("/")
 
-# manage assign
-def manage_assign(request):
-    if request.user.is_authenticated:
-        try:
-            data_check =  Extended_user.objects.get(user = request.user.id)
-        except:
-            data_check = False
-        if data_check.user_type == "2":
-            staff_courses = Staff.objects.filter(user=request.user.id)
-            curr_user = Staff.objects.get(user=request.user.id)
-            assignments = CreateAssign.objects.filter(created_by=curr_user)
-            print(assignments)
-            return render(request, "manage_assign.html", {"assignments":assignments,"staff_courses":staff_courses})
-        else:
-            return redirect("/")   
-    else:
-        return redirect("/")
-    
 
 # view Course
 def view_course(request):
@@ -181,6 +167,22 @@ def view_course(request):
             # courses= Course.objects.filter(request.user.id)
             student_course = Student.objects.filter(user=request.user.id)
             return render(request, "view_course.html", {"student_course":student_course})
+        else:
+            return redirect("/")   
+    else:
+        return redirect("/")
+
+
+# view Course
+def view_leaves(request):
+    if request.user.is_authenticated:
+        try:
+            data_check =  Extended_user.objects.get(user = request.user.id)
+        except:
+            data_check = False
+        if data_check.user_type == "3":
+            leaves = Leaves.objects.filter(user=request.user.id)
+            return render(request, "view_leaves.html", {"leaves":leaves})
         else:
             return redirect("/")   
     else:
@@ -277,15 +279,13 @@ def update_attendance(request):
                         att_state="1"
                     else:
                         att_state="0"
-                    print(rec[0])
-                    print(rec[1])
                     mark_att = Attendance.objects.create(course=course, student= student, date= date, attendance_state= att_state)
                     mark_att.save()
                     print("Attendance Saved for ",student.user.first_name)
 
                 attendance = Attendance.objects.all()
-                courses =Course.objects.all()
-                return render(request, "manage_attendance.html", {"attendance":attendance,"courses":courses})
+                staff_course =Staff.objects.filter(user=request.user.id)
+                return render(request, "manage_attendance.html", {"attendance":attendance,"staff_course":staff_course})
             else:
                 return redirect("/")   
         else:
@@ -299,9 +299,10 @@ def manage_attendance(request):
         except:
             data_check = False
         if data_check.user_type == "2":
-            attendance = Attendance.objects.all()
+            # attendance = Attendance.objects.all()
             courses= Course.objects.all()
-            return render(request, "manage_attendance.html", {"courses":courses})
+            staff_course = Staff.objects.filter(user=request.user.id)
+            return render(request, "manage_attendance.html", {"courses":courses,"staff_course":staff_course})
         else:
             return redirect("/")   
     else:
@@ -320,8 +321,8 @@ def get_attendance(request):
                 data_check = False
             if data_check.user_type == "2":
                 attendance = Attendance.objects.filter(course=course,date=date)
-                courses =Course.objects.all()
-                return render(request, "manage_attendance.html", {"attendance":attendance,"courses":courses})
+                staff_course = Staff.objects.filter(user=request.user.id)
+                return render(request, "manage_attendance.html", {"attendance":attendance,"staff_course":staff_course})
             else:
                 return redirect("/")   
         else:
@@ -334,8 +335,8 @@ def create_assign(request):
         except:
             data_check = False
         if data_check.user_type == "2":
-            courses = Course.objects.all()
-            return render(request, "create_assign.html", {"courses":courses})
+            staff_course = Staff.objects.filter(user=request.user.id)
+            return render(request, "create_assign.html", {"staff_course":staff_course})
         else:
             return redirect("/")   
     else:
@@ -360,7 +361,6 @@ def create_new_assign(request):
                 new_assign = CreateAssign.objects.create(name=name, course=course_inst,date=date.today(), due_date=due_date,questions=questions, created_by=created_by)
                 new_assign.save()
                 print("New Assignment Created")
-
                 assignments = Assignment.objects.all()
                 courses =Course.objects.all()
                 return render(request, "manage_assign.html", {"assignments":assignments,"courses":courses})
@@ -369,27 +369,23 @@ def create_new_assign(request):
         else:
             return redirect("/")
 
-# fetch assing
-def fetch_assign(request):
-    if request.method=="POST":
-        course = request.POST.get('course')
-        date = request.POST['date']
 
-        if request.user.is_authenticated:
-            try:
-                data_check =  Extended_user.objects.get(user = request.user.id)
-            except:
-                data_check = False
-            if data_check.user_type == "2":
-                course_inst = Course.objects.get(id=int(course))
-                assignments = Assignment.objects.filter(assign__date=date, assign__course=course_inst)
-                courses =Course.objects.all()
-                return render(request, "view_assign.html", {"assignments":assignments,"courses":courses})
-            else:
-                return redirect("/")   
+# fetch student
+def fetch_assign(request,id):
+    if request.user.is_authenticated:
+        try:
+            data_check =  Extended_user.objects.get(user = request.user.id)
+        except:
+            data_check = False
+        if data_check.user_type == "2":
+            course_inst = Course.objects.get(id=id)
+            assignments = Assignment.objects.filter(assign__course=course_inst)
+            staff_course= Staff.objects.filter(user=request.user.id)
+            return render(request, "view_assign.html", {"staff_course":staff_course,"assignments":assignments})
         else:
-            return redirect("/")
-
+            return redirect("/")   
+    else:
+        return redirect("/")
 
 # view assign
 def view_assign(request):
@@ -399,9 +395,8 @@ def view_assign(request):
         except:
             data_check = False
         if data_check.user_type == "2":
-            assignments = Assignment.objects.all()
             staff_course = Staff.objects.filter(user=request.user.id)
-            return render(request, "view_assign.html", {"assignments":assignments,"staff_course":staff_course})
+            return render(request, "view_assign.html", {"staff_course":staff_course})
         else:
             return redirect("/")   
     else:
@@ -417,9 +412,12 @@ def manage_assign(request):
         if data_check.user_type == "2":
             staff_courses = Staff.objects.filter(user=request.user.id)
             curr_user = Staff.objects.get(user=request.user.id)
-            assignments = CreateAssign.objects.filter(created_by=curr_user)
-            print(assignments)
-            return render(request, "manage_assign.html", {"assignments":assignments,"staff_courses":staff_courses})
+            my_courses = curr_user.rel_course.all()
+            my_course_list=[]
+            for course in my_courses:
+                my_course_list.append(course)
+            assignments = CreateAssign.objects.all()
+            return render(request, "manage_assign.html", {"assignments":assignments,"staff_courses":staff_courses,"my_course_list":my_course_list})
         else:
             return redirect("/")   
     else:
@@ -529,6 +527,63 @@ def delete_staff(request,id):
             return redirect("/")   
     else:
         return redirect("/")
+    
+
+# edit staff
+def edit_staff(request,id):
+    if request.user.is_authenticated:
+        try:
+            data_check =  Extended_user.objects.get(user = request.user.id)
+        except:
+            data_check = False
+        if data_check.user_type == "1":
+            staff = Staff.objects.filter(id=id)
+            return render(request, "edit_staff.html", {"staff":staff})
+        else:
+            return redirect("/")   
+    else:
+        return redirect("/")
+
+
+# update staff data
+def update_staff_data(request,id):
+    if request.method=="POST":
+        name = request.POST['name']
+        username = request.POST['username']
+        password = request.POST['password']
+        staff_id = request.POST['staff_id']
+        rel_course = request.POST['rel_course']
+        print("Rel COurse", rel_course)
+        course_list =[]
+        if rel_course:
+            new_list = rel_course.split(",")
+            for rec in new_list:
+                course_list.append(int(rec))
+            print("new list", course_list)
+
+
+        if request.user.is_authenticated:
+            try:
+                data_check =  Extended_user.objects.get(user = request.user.id)
+            except:
+                data_check = False
+            if data_check.user_type == "1":
+                user = User.objects.get(id=id)
+                user.first_name = name
+                user.password = password
+                user.save()
+                print("User Updated ID=",user.first_name)
+                staff = Staff.objects.get(user=user)
+                if rel_course:
+                    staff.rel_course.set(course_list)
+                staff.staff_id =staff_id
+                staff.save()
+                print("Staff Updated")
+                return redirect("/manage_staff")
+            else:
+                return redirect("/")   
+        else:
+            return redirect("/")
 
 
 # add student
@@ -616,6 +671,64 @@ def delete_student(request,id):
     else:
         return redirect("/")
 
+
+# edit student
+def edit_student(request,id):
+    if request.user.is_authenticated:
+        try:
+            data_check =  Extended_user.objects.get(user = request.user.id)
+        except:
+            data_check = False
+        if data_check.user_type == "1":
+            student = Student.objects.filter(id=id)
+            return render(request, "edit_student.html", {"student":student})
+        else:
+            return redirect("/")   
+    else:
+        return redirect("/")
+
+
+# update student data
+def update_stud_data(request,id):
+    if request.method=="POST":
+        name = request.POST['name']
+        username = request.POST['username']
+        password = request.POST['password']
+        stud_id = request.POST['stud_id']
+        rel_course = request.POST['rel_course']
+        print("Rel COurse", rel_course)
+        course_list =[]
+        if rel_course:
+            new_list = rel_course.split(",")
+            for rec in new_list:
+                course_list.append(int(rec))
+            print("new list", course_list)
+
+
+        if request.user.is_authenticated:
+            try:
+                data_check =  Extended_user.objects.get(user = request.user.id)
+            except:
+                data_check = False
+            if data_check.user_type == "1":
+                user = User.objects.get(id=id)
+                user.first_name = name
+                user.password = password
+                user.save()
+                print("User Updated ID=",user.first_name)
+                student = Student.objects.get(user=user)
+                if rel_course:
+                    student.enrolled_courses.set(course_list)
+                student.rollno =stud_id
+                student.save()
+                print("Student Updated")
+                return redirect("/manage_student")
+            else:
+                return redirect("/")   
+        else:
+            return redirect("/")
+
+
 # add_course
 def add_course(request):
     if request.user.is_authenticated:
@@ -685,6 +798,47 @@ def delete_course(request,id):
         return redirect("/")
 
 
+# edit course
+def edit_course(request,id):
+    if request.user.is_authenticated:
+        try:
+            data_check =  Extended_user.objects.get(user = request.user.id)
+        except:
+            data_check = False
+        if data_check.user_type == "1":
+            course = Course.objects.filter(id=id)
+            return render(request, "edit_course.html", {"course":course})
+        else:
+            return redirect("/")   
+    else:
+        return redirect("/")
+# update course
+def update_course(request,id):
+    if request.method=="POST":
+        name = request.POST['name']
+        start_date = request.POST['start_date']
+        end_date = request.POST['end_date']
+        print("Start Date",start_date)
+        if request.user.is_authenticated:
+            try:
+                data_check =  Extended_user.objects.get(user = request.user.id)
+            except:
+                data_check = False
+            if data_check.user_type == "1":
+                new_course = Course.objects.get(id=id)
+                new_course.name=name
+                new_course.start_date=start_date
+                new_course.end_date=end_date
+                new_course.save()
+                print(" Course Updated")
+                courses = Course.objects.all()
+                return redirect("/manage_course")
+            else:
+                return redirect("/")   
+        else:
+            return redirect("/")
+
+
 # manage leaves
 def manage_leaves(request):
     if request.user.is_authenticated:
@@ -694,6 +848,43 @@ def manage_leaves(request):
             data_check = False
         if data_check.user_type == "1":
             leaves = Leaves.objects.all()
+            return render(request, "manage_leaves.html", {"leaves":leaves})
+        else:
+            return redirect("/")   
+    else:
+        return redirect("/")
+
+
+# approve leaves
+def approve_leave(request,id):
+    if request.user.is_authenticated:
+        try:
+            data_check =  Extended_user.objects.get(user = request.user.id)
+        except:
+            data_check = False
+        if data_check.user_type == "1":
+            leaves = Leaves.objects.all()
+            leave_obj = Leaves.objects.get(id=id)
+            leave_obj.leave_state = "approved"
+            leave_obj.save()
+            return render(request, "manage_leaves.html", {"leaves":leaves})
+        else:
+            return redirect("/")   
+    else:
+        return redirect("/")
+
+# reject leaves
+def reject_leave(request,id):
+    if request.user.is_authenticated:
+        try:
+            data_check =  Extended_user.objects.get(user = request.user.id)
+        except:
+            data_check = False
+        if data_check.user_type == "1":
+            leaves = Leaves.objects.all()
+            leave_obj = Leaves.objects.get(id=id)
+            leave_obj.leave_state = "rejected"
+            leave_obj.save()
             return render(request, "manage_leaves.html", {"leaves":leaves})
         else:
             return redirect("/")   
